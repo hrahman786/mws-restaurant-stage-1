@@ -1,41 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <link rel="stylesheet" href="css/styles.css">
-  <title>Restaurant Reviews</title>
+  <title>Restaurant Reviews - Home</title>
 </head>
 
 <body>
   <header>
     <nav>
-      <h1><a href="/">Restaurant Reviews</a></h1>
+      <h1><a href="/">Restaurant Reviews - Home</a></h1>
     </nav>
   </header>
 
   <main id="maincontent">
-    <section id="map-container">
+    <section id="map-container" tabindex="0">
       <div id="map"></div>
     </section>
     <section>
       <div class="filter-options">
-        <h2>Filter Results</h2>
+        <h2 tabindex="0">Filter Results</h2>
         <div class="filter-options-select">
           <div>
-            <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
+          	<label class="hidden" for="neighborhoods-select">Select Neighborhood</label>
+            <select id="neighborhoods-select" title="Select Neighborhood" name="neighborhoods" onchange="updateRestaurants()">
               <option value="all">All Neighborhoods</option>
             </select>
           </div>
           <div>
-            <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
+          	<label class="hidden" for="cuisines-select">Select Cuisines</label>
+            <select id="cuisines-select" title="Select Cuisines" name="cuisines" onchange="updateRestaurants()">
               <option value="all">All Cuisines</option>
             </select>
           </div>
         </div>
       </div>
+      <label class="hidden" tabindex="0" for="restaurants-list">Restaurant listings</label>
       <ul id="restaurants-list"></ul>
     </section>
   </main>

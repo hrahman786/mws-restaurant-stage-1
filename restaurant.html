@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -15,12 +15,13 @@
 <body class="inside">
   <!-- Beginning header -->
   <header>
-    <!-- Beginning nav -->
+    <!-- Beginning nav --> 
     <nav>
-      <h1><a href="/">Restaurant Reviews</a></h1>
+      <h1 tabindex="0"><a href="/">Restaurant Reviews</a></h1>
     </nav>
     <!-- Beginning breadcrumb -->
-    <ul id="breadcrumb" >
+    <label class="hidden" tabindex="0" for="breadcrumb">Navigation breadcrumb</label>
+    <ul id="breadcrumb">
       <li><a href="/">Home</a></li>
     </ul>
     <!-- End breadcrumb -->
@@ -37,11 +38,23 @@
     <!-- End map -->
     <!-- Beginning restaurant -->
     <section id="restaurant-container">
-      <h1 id="restaurant-name"></h1>
-      <img id="restaurant-img">
-      <p id="restaurant-cuisine"></p>
-      <p id="restaurant-address"></p>
-      <table id="restaurant-hours"></table>
+      <label class="hidden" tabindex="0" for="sec-restaurant-name">Restaurant Name</label>
+      <section id="sec-restaurant-container">
+        <h1 id="restaurant-name" tabindex="0"></h1>
+      </section>
+      <img id="restaurant-img" tabindex="0">
+      <label class="hidden" tabindex="0" for="sec-restaurant-cuisine">Restaurant Cuisine</label>
+      <section id="sec-restaurant-cuisine">
+        <p id="restaurant-cuisine" tabindex="0"></p>
+      </section>
+      <label class="hidden" tabindex="0" for="sec-restaurant-address">Restaurant Address</label>
+      <section id="sec-restaurant-address">
+        <p id="restaurant-address" tabindex="0"></p>
+      </section>
+      <label class="hidden" tabindex="0" for="sec-restaurant-hours">Restaurant Hours</label>
+      <section id="sec-restaurant-hours">
+        <table id="restaurant-hours" tabindex="0"></table>
+      </section>
     </section>
     <!-- end restaurant -->
     <!-- Beginning reviews -->
