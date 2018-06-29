@@ -1,0 +1,107 @@
+@media screen and (max-width: 800px) {
+
+  .inside #footer {
+    width: 93%;
+    padding: 10px;
+    letter-spacing: initial;
+  }
+
+  .inside nav h1 a {
+    color: #fff;
+    font-size: 1.4em;
+    font-weight: 200;
+    text-transform: uppercase;
+    letter-spacing: initial;
+  }
+
+  .inside #breadcrumb {
+    padding: 5px 10px 5px;
+    font-size: 1em;
+    list-style: none;
+    background-color: #eee;
+    font-size: 1em;
+    margin: 0;
+    width: calc(100% - 10px);
+  }
+
+  .inside #map-container {
+    background: blue none repeat scroll 0 0;
+    height: 200px;
+    position: fixed;
+    left: 0;
+    top: 80px;
+    width: 100%;
+  }
+
+  #restaurant-name {
+    font-size: 1em;
+  }
+
+  #restaurant-img {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #restaurant-cuisine {
+    width: 100%;
+  }
+
+  #restaurant-container {
+    padding: 300px 40px 30px;
+    width: 70%;
+  }
+
+  #reviews-container {
+    padding: 50px 10px 10px;
+    width: 80%;
+  }
+
+  #reviews-list li {
+    position: initial;
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 801px) {
+  #breadcrumb {
+    width: calc(60% - 80px);
+  }
+
+  .inside #map-container {
+    width: 40%;
+` }
+
+  .inside #footer {
+    width: 53%;
+  }
+
+  #restaurant-name {
+    margin: 20px 0 30px;
+  }
+
+  #restaurant-img {
+    max-width: 100%;
+  }
+
+  #restaurant-container {
+    width: 55%;
+  }
+
+  #reviews-container {
+    padding: 30px 20px 80px;
+    width: 60%;
+  }
+
+  #reviews-container h2 {
+    font-size: 2.4em;
+  }
+}
+
+/*
+@media screen and (min-width: 850px) {
+  body {
+    width: 1250px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}*/
