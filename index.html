@@ -17,8 +17,10 @@
   </header>
 
   <main id="maincontent">
-    <section id="map-container" tabindex="0">
-      <div id="map"></div>
+    <label class="hidden" tabindex="0" for="map-container">Map restaurant listings</label>
+    <section id="map-container">
+      <!-- Add aria-label and role -->
+      <div id="map" aria-label="Google Maps overview of restaurants" role="application"></div>
     </section>
   
     <section>
