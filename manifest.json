@@ -1,0 +1,25 @@
+{
+  "background_color": "#ececec",
+  "theme_color": "#155C8E",
+  "name": "Restaurant Reviews App - Stage 2",
+  "short_name": "mws-rest-2",
+  "display": "standalone",
+  "start_url": "index.html",
+  "icons": [
+    {
+      "src": "restaurant-128.ico",
+      "sizes": "128x128",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "restaurant-256.ico",
+      "sizes": "256x256",
+      "type": "image/x-icon"
+    },
+    {  
+      "src": "restaurant-512.ico",  
+      "sizes": "512x512",  
+      "type": "image/x-icon"  
+    }
+  ]
+}

@@ -11,7 +11,7 @@ window.initMap = () => {
     } else {
       self.map = new google.maps.Map(document.getElementById('map'), {
         zoom: 16,
-        center: restaurant.latlng,
+        center: restaurant[0].latlng,
         scrollwheel: false
       });
       fillBreadcrumb();
@@ -50,21 +50,21 @@ fetchRestaurantFromURL = (callback) => {
  */
 fillRestaurantHTML = (restaurant = self.restaurant) => {
   const name = document.getElementById('restaurant-name');
-  name.innerHTML = restaurant.name;
+  name.innerHTML = restaurant[0].name;
 
   const address = document.getElementById('restaurant-address');
-  address.innerHTML = restaurant.address;
+  address.innerHTML = restaurant[0].address;
 
   const image = document.getElementById('restaurant-img');
   image.className = 'restaurant-img'
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
-  image.alt = 'Image of restaurant ' + restaurant.name; 
+  image.src = DBHelper.imageUrlForRestaurant(restaurant[0]);
+  image.alt = 'Image of restaurant ' + restaurant[0].name; 
 
   const cuisine = document.getElementById('restaurant-cuisine');
-  cuisine.innerHTML = restaurant.cuisine_type;
+  cuisine.innerHTML = restaurant[0].cuisine_type;
 
   // fill operating hours
-  if (restaurant.operating_hours) {
+  if (restaurant[0].operating_hours) {
     fillRestaurantHoursHTML(); 
   }
   // fill reviews
@@ -74,7 +74,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
 /**
  * Create restaurant operating hours HTML table and add it to the webpage.
  */
-fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => {
+fillRestaurantHoursHTML = (operatingHours = self.restaurant[0].operating_hours) => {
   const hours = document.getElementById('restaurant-hours');
   for (let key in operatingHours) {
     const row = document.createElement('tr');
@@ -94,7 +94,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+fillReviewsHTML = (reviews = self.restaurant[0].reviews) => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
   title.innerHTML = 'Reviews';
@@ -146,7 +146,7 @@ createReviewHTML = (review) => {
 fillBreadcrumb = (restaurant=self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
-  li.innerHTML = restaurant.name;
+  li.innerHTML = restaurant[0].name;
   breadcrumb.appendChild(li);
 }
 

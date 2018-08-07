@@ -1,21 +1,51 @@
+self.importScripts('js/dexie.js');
+self.importScripts('js/dbhelper.js');
+
 // Set a name for the current cache
 var cacheName = 'v1';
+
+/**
+ * Create the Indexed DB store and store the json data from the dev server
+ * Using the Dexie library
+ */
+function createDB()
+{
+  fetch(DBHelper.DATABASE_URL).then(function(response) { 
+    // Convert to JSON
+    return response.json();
+  }).then(function(j) {
+    // Declare Database
+    var db = new Dexie("rest30-db");
+    db.version(1).stores({
+    ny: 'id,data'
+    });
+    db.ny.bulkPut(j).then(function(lastkey) {
+    console.log("Copying data to indexed db");
+    console.log("Last data id was: " + lastkey);
+    }).catch(Dexie.BulkError, function (e) {
+      console.error ("Copying did not fully succeed.");
+    });
+  }).catch(function() {
+    console.log("Network error in Service Worker");   
+  });
+}
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open(cacheName).then(function(cache) {
       return cache.addAll([
-    '/',
+  '/',
 	'/index.html',
 	'/restaurant.html',
 	'service-worker.js',
+  'manifest.json',
 	'/js/app.js',
 	'/js/dbhelper.js',
 	'/js/main.js',
 	'/js/restaurant_info.js',
+  '/js/dexie.js',
 	'/css/responsive.css',
 	'/css/styles.css',
-	'/data/restaurants.json',
 	'/img/1.jpg',
 	'/img/2.jpg',
 	'/img/3.jpg',
@@ -25,7 +55,10 @@ self.addEventListener('install', function(event) {
 	'/img/7.jpg',
 	'/img/8.jpg',
 	'/img/9.jpg',
-	'/img/10.jpg'
+	'/img/10.jpg',
+  'restaurant-128.ico',
+  'restaurant-256.ico',
+  'restaurant-512.ico'
       ]);
     })
   );
@@ -42,6 +75,10 @@ self.addEventListener('activate', function(event) {
       }));
     })
   );
+
+  // Create the Indexed DB store and store the json data from the dev server 
+  event.waitUntil(createDB());
+
 });
 
 self.addEventListener('fetch', function(event) {
@@ -55,6 +92,9 @@ self.addEventListener('fetch', function(event) {
         // response may be used only once
         // we need to save clone to put one copy in cache
         // and serve second one
+
+        //event.waitUntil(createDB());
+
         let responseClone = response.clone();
         
         caches.open(cacheName).then(function (cache) {
