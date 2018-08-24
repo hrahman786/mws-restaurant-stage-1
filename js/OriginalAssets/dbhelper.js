@@ -13,13 +13,18 @@ class DBHelper {
     return `http://localhost:${port}/restaurants/`;
   }
 
+  static get DATABASE_REVIEW_URL() {
+    const port = 1337 // Change this to read from the development server
+    return `http://localhost:${port}/reviews/?restaurant_id=`;
+  }
+
   /**
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {
-    var db = new Dexie("rest30-db");
+    var db = new Dexie("restaurants1-db");
     db.version(1).stores({
-      ny: 'id,data'
+      ny: 'id'
     });
     db.ny
     .orderBy('id')
@@ -34,9 +39,9 @@ class DBHelper {
    * Fetch a restaurant by its ID.
    */
   static fetchRestaurantById(id, callback) {
-    var db = new Dexie("rest30-db");
+    var db = new Dexie("restaurants1-db");
     db.version(1).stores({
-      ny: 'id,data'
+      ny: 'id'
     });
     db.ny
     .orderBy('id')
@@ -52,9 +57,9 @@ class DBHelper {
    * Fetch restaurants by a cuisine type with proper error handling.
    */
   static fetchRestaurantByCuisine(cuisine, callback) {
-    var db = new Dexie("rest30-db");
+    var db = new Dexie("restaurants1-db");
     db.version(1).stores({
-      ny: 'id,data'
+      ny: 'id'
     });
     db.ny
     .orderBy('id')
@@ -70,9 +75,9 @@ class DBHelper {
    * Fetch restaurants by a neighborhood with proper error handling.
    */
   static fetchRestaurantByNeighborhood(neighborhood, callback) {
-    var db = new Dexie("rest30-db");
+    var db = new Dexie("restaurants1-db");
     db.version(1).stores({
-      ny: 'id,data'
+      ny: 'id'
     });
     db.ny
     .orderBy('id')
@@ -88,9 +93,9 @@ class DBHelper {
    * Fetch restaurants by a cuisine and a neighborhood with proper error handling.
    */
   static fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, callback) {
-    var db = new Dexie("rest30-db");
+    var db = new Dexie("restaurants1-db");
     db.version(1).stores({
-      ny: 'id,data'
+      ny: 'id'
     });
     db.ny
     .orderBy('id')
@@ -122,9 +127,9 @@ class DBHelper {
       callback(null, uniqueNeighborhoods);
     }).catch(function() {
       // Read from Indexdb if network error
-      var db = new Dexie("rest30-db");
+      var db = new Dexie("restaurants1-db");
       db.version(1).stores({
-      ny: 'id,data'
+      ny: 'id'
       });
       db.ny
       .orderBy('id')
@@ -155,9 +160,9 @@ class DBHelper {
       callback(null, uniqueCuisines);
     }).catch(function() {
       // Read from Indexdb if network error
-      var db = new Dexie("rest30-db");
+      var db = new Dexie("restaurants1-db");
       db.version(1).stores({
-      ny: 'id,data'
+      ny: 'id'
       });
       db.ny
       .orderBy('id')
@@ -201,4 +206,51 @@ class DBHelper {
     return marker;
   }
 
+  // Reviews
+  /**
+  * Fetch all reviews.
+  */
+  static fetchReviews(id, callback) {
+    var db = new Dexie("reviews1-db");
+      db.version(1).stores({
+      ny: 'id,restaurant_id,[id+restaurant_id]'
+    });
+    var restid = parseInt(id); 
+    db.open().then(function(){
+    return db.ny
+      .where('restaurant_id')
+      .equals(restid)
+      .toArray();
+    }).then(function(idbreviews){
+      //self.reviews = JSON.stringify(idbreviews, null, 2); 
+      console.log("fetchReviews log - Reviews found from idb: " + JSON.stringify(idbreviews, null, 2));
+      callback(null, idbreviews);
+    }).catch (function (e) {
+      //console.log (e);
+      callback(e, null);
+    });
+  }
+
+  /**
+   * Fetch all restaurants.
+   */
+  static fetchReviewsByRestaurantId(id, callback) {
+    //fetch(DBHelper.DATABASE_REVIEW_URL + id, {cache: "no-cache"}).then(function(response) {
+    fetch(DBHelper.DATABASE_REVIEW_URL + id).then(function(response) { 
+      // Convert to JSON
+      if (!response.ok) {
+        throw Error("fetchReviewsByRestaurantId API Server error: " + response.statusText);
+      }
+      return response.json();
+    }).then(function(j) {
+      // Return the JavaScript object
+      //console.log("fetchReviewsByRestaurantId log - Reviews found from API Server: " + JSON.stringify(j, null, 2));
+      callback(null, j);
+    }).catch(function(error) {
+        console.log("fetchReviewsByRestaurantId error: " + error);
+        callback(error, null);
+    });
+  }
+
+//end of class
 }

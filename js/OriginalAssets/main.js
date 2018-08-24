@@ -6,9 +6,11 @@ var map
 var markers = []
 
 /**
- * Fetch neighborhoods and cuisines as soon as the page is loaded.
+ * Update Restaurants, fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {
+  document.getElementById('map-container').style.display = 'none'; // ensure View Map button is hidden on load
+  updateRestaurants();
   fetchNeighborhoods();
   fetchCuisines();
 });
@@ -69,7 +71,7 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
 }
 
 /**
- * Initialize Google map, called from HTML.
+ * Initialize Google map, called from HTML - Not used
  */
 window.initMap = () => {
   let loc = {
@@ -82,6 +84,37 @@ window.initMap = () => {
     scrollwheel: false
   });
   updateRestaurants();
+}
+
+/**
+ * Display/Hide Google map, when button is clicked
+ */
+function displayMap()
+{
+  if (document.getElementById('map-container').style.display == 'none') {
+    document.getElementById('toggleMap').value = 'Hide Map';
+    document.getElementById('map-container').style.display = 'block';
+    initialize();
+    updateRestaurants();
+  }
+  else {
+    document.getElementById('toggleMap').value = 'View Map';
+    document.getElementById('map-container').style.display = 'none';
+  }
+}
+
+/**
+ * Initialize Google maps
+ */
+function initialize()
+{
+  var myOptions = {
+    zoom: 12,
+    center: new google.maps.LatLng( 40.722216, -73.987501 ),
+    scrollwheel: false
+  }
+  // create the map
+  map = new google.maps.Map( document.getElementById( "map" ),myOptions );
 }
 
 /**
@@ -148,8 +181,33 @@ createRestaurantHTML = (restaurant) => {
   li.append(image);
 
   const name = document.createElement('h1');
-  name.innerHTML = restaurant.name;
+  name.innerHTML = restaurant.name; 
   li.append(name);
+
+  // Add favorite
+  const fav = document.createElement('button');
+  fav.innerHTML = '❤';
+  fav.classList.add("fav_btn");
+  // Change fav status on click
+  fav.onclick = function() {
+    const isFavNow = !restaurant.is_favorite;
+    console.log("isFavNow:" + isFavNow);
+    // fetch from API server
+    fetch(`http://localhost:1337/restaurants/${restaurant.id}/?is_favorite=${isFavNow}`, {
+        method: 'PUT'
+    });
+    // Modify idb
+    var db = new Dexie("restaurants1-db");
+    db.version(1).stores({
+      ny: 'id'
+    });
+    db.ny.where("id").equals(restaurant.id).modify({is_favorite: isFavNow});
+
+    restaurant.is_favorite = !restaurant.is_favorite
+    changeFavElementClass(fav, restaurant.is_favorite)
+  };
+  changeFavElementClass(fav, restaurant.is_favorite)
+  li.append(fav);
 
   const neighborhood = document.createElement('p');
   neighborhood.innerHTML = restaurant.neighborhood;
@@ -165,6 +223,23 @@ createRestaurantHTML = (restaurant) => {
   li.append(more)
 
   return li
+}
+
+/**
+ * Change the favorite symbol when it is toggled.
+ */
+changeFavElementClass = (el, fav) => {
+  if (!fav) {
+    el.classList.remove('favorite_yes');
+    el.classList.add('favorite_no');
+    el.setAttribute('aria-label', 'mark as favorite');
+  } 
+  else 
+  {
+    el.classList.remove('favorite_no');
+    el.classList.add('favorite_yes');
+    el.setAttribute('aria-label', 'remove as favorite');
+  }
 }
 
 /**

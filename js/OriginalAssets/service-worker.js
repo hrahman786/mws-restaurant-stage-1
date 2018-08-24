@@ -15,9 +15,9 @@ function createDB()
     return response.json();
   }).then(function(j) {
     // Declare Database
-    var db = new Dexie("rest30-db");
+    var db = new Dexie("restaurants1-db");
     db.version(1).stores({
-    ny: 'id,data'
+    ny: 'id'
     });
     db.ny.bulkPut(j).then(function(lastkey) {
     console.log("Copying data to indexed db");
